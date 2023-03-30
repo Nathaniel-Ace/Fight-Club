@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1679261335 source:c:\users\natha\onedrive\desktop\fhtw\2. semester\objektorientierte programmierung\beat-em-up\main.cpp
+	<iostream>
+	<string>
+	<vector>
+	<cstdlib>
+	<ctime>
+	<map>
+

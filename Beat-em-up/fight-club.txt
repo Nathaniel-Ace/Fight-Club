@@ -1,0 +1,101 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+class Character {
+protected:
+    string name;
+    int health;
+    int attack;
+    int defense;
+    vector<string> abilities;
+public:
+    Character(string n, int h, int a, int d) : name(n), health(h), attack(a), defense(d) {}
+    virtual ~Character() {}
+    string getName() const { return name; }
+    int getHealth() const { return health; }
+    int getAttack() const { return attack; }
+    int getDefense() const { return defense; }
+    const vector<string>& getAbilities() const { return abilities; }
+    virtual void ability1(Character* target) = 0;
+    virtual void ability2(Character* target) = 0;
+    virtual void ability3(Character* target) = 0;
+    virtual void attackNormal(Character* target) {
+        int damage = max(attack - target->getDefense(), 0);
+        target->takeDamage(damage);
+        cout << name << " attacks " << target->getName() << " and deals " << damage << " damage." << endl;
+    }
+    void takeDamage(int damage) {
+        health = max(health - damage, 0);
+        cout << name << " takes " << damage << " damage." << endl;
+    }
+    bool isAlive() const { return health > 0; }
+};
+
+class Warrior : public Character {
+public:
+    Warrior(string n) : Character(n, 150, 20, 10) {
+        abilities.push_back("Double Strike");
+        abilities.push_back("Shield Bash");
+        abilities.push_back("Whirlwind");
+    }
+    virtual void ability1(Character* target) {
+        int damage = max(2 * attack - target->getDefense(), 0);
+        target->takeDamage(damage);
+        cout << name << " performs a Double Strike on " << target->getName() << " and deals " << damage << " damage." << endl;
+    }
+    virtual void ability2(Character* target) {
+        int damage = max(attack - target->getDefense(), 0);
+        target->takeDamage(damage);
+        cout << name << " performs a Shield Bash on " << target->getName() << " and deals " << damage << " damage." << endl;
+        target->takeDamage(damage);
+        cout << name << " performs a second attack on " << target->getName() << " and deals " << damage << " damage." << endl;
+    }
+    virtual void ability3(Character* target) {
+        int damage = max(attack - target->getDefense(), 0);
+        target->takeDamage(damage);
+        cout << name << " performs a Whirlwind attack and deals " << damage << " damage to " << target->getName() << "." << endl;
+    }
+};
+
+class Mage : public Character {
+public:
+    Mage(string n) : Character(n, 80, 30, 5) {
+        abilities.push_back("Fireball");
+        abilities.push_back("Ice Lance");
+        abilities.push_back("Chain Lightning");
+    }
+    virtual void ability1(Character* target) {
+        int damage = max(3 * attack - target->getDefense(), 0);
+        target->takeDamage(damage);
+        cout << name << " casts a Fireball at " << target->getName() << " and deals " << damage << " damage." << endl;
+    }
+    virtual void ability2(Character* target) {
+        int damage = max(2 * attack - target->getDefense(), 0);
+        target->takeDamage(damage);
+        cout << name << " casts an Ice Lance at " << target->getName() << " and deals " << damage << " damage." << endl;
+
+    }
+    virtual void ability3(Character* target) {
+        int damage = max(attack - target->getDefense(), 0);
+        target->takeDamage(damage);
+        cout << name << " casts a Chain Lightning spell and deals " << damage << " damage to " << target->getName() << "." << endl;
+
+    }
+    void reduceAttack(int amount) {
+        attack = max(attack - amount, 0);
+    }
+    void reduceDefense(int amount) {
+        defense = max(defense - amount, 0);
+    }
+};
+
+int main() {
+
+    return 0;
+
+}
